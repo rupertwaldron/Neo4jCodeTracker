@@ -66,7 +66,9 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/product", method = RequestMethod.POST)
-    public String saveOrUpdateProduct(@Valid ProductForm productForm, BindingResult bindingResult){
+    public String saveOrUpdateProduct(
+            @Valid ProductForm productForm,
+            BindingResult bindingResult){
 
         if(bindingResult.hasErrors()){
             return "product/productform";

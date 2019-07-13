@@ -1,7 +1,8 @@
 package guru.springframework.repositories;
 
+import guru.springframework.domain.InitialProducts;
 import guru.springframework.domain.Product;
-import org.junit.Assert;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,39 +11,44 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+@Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 public class ProductRepositoryTest {
-
-    private static final BigDecimal BIG_DECIMAL_100 = BigDecimal.valueOf(100.00);
-    private static final String PRODUCT_DESCRIPTION = "a cool product";
-    private static final String IMAGE_URL = "http://an-imageurl.com/image1.jpg";
 
     @Autowired
     private ProductRepository productRepository;
 
     @Before
     public void setUp() throws Exception {
-
+        productRepository.deleteAll();
+        InitialProducts.createProducts().forEach(product -> {
+            productRepository.save(product);
+            log.info("Product saved : " + product.getDescription());
+        });
     }
 
     @Test
     public void testPersistence() {
-        //given
-        Product product = new Product();
-        product.setDescription(PRODUCT_DESCRIPTION);
-        product.setImageUrl(IMAGE_URL);
-        product.setPrice(BIG_DECIMAL_100);
 
-        //when
-        productRepository.save(product);
+        productRepository.findAll().forEach(product -> {
+            assertNotNull(product.getId());
+        });
 
-        //then
-        Assert.assertNotNull(product.getId());
-        Product newProduct = productRepository.findById(product.getId()).orElse(null);
-        Assert.assertEquals(PRODUCT_DESCRIPTION, newProduct.getDescription());
-        Assert.assertEquals(BIG_DECIMAL_100.compareTo(newProduct.getPrice()), 0);
-        Assert.assertEquals(IMAGE_URL, newProduct.getImageUrl());
+        Product newProduct = productRepository.findByDescription("bucket");
+        assertEquals("bucket", newProduct.getDescription());
+        assertEquals(BigDecimal.valueOf(1.18).compareTo(newProduct.getPrice()), 0);
+        assertEquals("empty", newProduct.getImageUrl());
+    }
+
+    @Test
+    public void testRelationships() {
+        Collection<Product> newProduct = productRepository.getComplimentProducts("bucket");
+        assertEquals(newProduct.stream().findFirst().get().getDescription(), "spade");
     }
 }

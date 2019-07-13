@@ -20,7 +20,9 @@ public class ProductServiceImpl implements ProductService {
     private ProductFormToProduct productFormToProduct;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, ProductFormToProduct productFormToProduct) {
+    public ProductServiceImpl(
+            ProductRepository productRepository,
+            ProductFormToProduct productFormToProduct) {
         this.productRepository = productRepository;
         this.productFormToProduct = productFormToProduct;
     }

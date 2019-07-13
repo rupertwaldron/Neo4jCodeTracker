@@ -1,9 +1,16 @@
 package guru.springframework.domain;
 
-import org.neo4j.ogm.annotation.GraphId;
+import org.neo4j.ogm.annotation.GeneratedValue;
+import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
 
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by jt on 1/10/17.
@@ -11,11 +18,20 @@ import java.math.BigDecimal;
 @NodeEntity
 public class Product {
 
-    @GraphId
+    @Id
+    @GeneratedValue
     private Long id;
     private String description;
     private BigDecimal price;
     private String imageUrl;
+
+    public Product() {}
+
+    public Product(String description, BigDecimal price) {
+        this.description = description;
+        this.price = price;
+        this.imageUrl = "empty";
+    }
 
     public Long getId() {
         return id;
@@ -47,5 +63,24 @@ public class Product {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    @Relationship(type = "COMPLIMENTS", direction = Relationship.UNDIRECTED)
+    public Set<Product> partners;
+
+    public void compliments(Product product) {
+        if (partners == null) {
+            partners = new HashSet<>();
+        }
+        partners.add(product);
+    }
+
+    public String toString() {
+
+        return this.description + "'s partners => "
+                + Optional.ofNullable(this.partners).orElse(
+                Collections.emptySet()).stream()
+                .map(Product::getDescription)
+                .collect(Collectors.toList());
     }
 }
