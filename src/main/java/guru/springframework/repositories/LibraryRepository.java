@@ -17,10 +17,13 @@ public interface LibraryRepository extends Neo4jRepository<Library, Long> {
     @Query("MATCH (p:Library) RETURN p LIMIT {limit}")
     Collection<Library> getLibraries(@Param("limit") int limit);
 
-    @Query("MATCH (:Repo {name: {linkedRepo}})-[:USES]-(p:Repo) RETURN p")
-    Collection<Library> getLinkedLibraries(@Param("linkedRepo") String linkedRepo);
+    @Query("MATCH (:Library {name: {linkedLib}})-[:LINKS_TO]-(l:Library) RETURN l")
+    Collection<Library> getLinkedLibrary(@Param("linkedLib") String linkedLib);
 
-    @Query("MATCH (a:Repo),(b:Repo) WHERE a.name = {repo1} AND b.name = {repo2} CREATE (a)-[r:USES]->(b)")
-    void createRelationship(@Param("repo1") String repo1, @Param("repo2") String repo2);
+    @Query("MATCH (a:Repo),(b:Library) WHERE a.name = {repo1} AND b.name = {lib2} CREATE (a)-[r:USES]->(b)")
+    void createRepoRelationship(@Param("repo1") String repo1, @Param("lib2") String lib2);
+
+    @Query("MATCH (a:Library {name: {lib1}}), (l:Library {name: {lib2}}) CREATE (a)-[r:LINKS_TO]->(l)")
+    void createLibraryRelationship(@Param("lib1") String lib1, @Param("lib2") String lib2);
 
 }

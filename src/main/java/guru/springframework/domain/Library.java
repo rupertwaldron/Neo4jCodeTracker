@@ -1,5 +1,9 @@
 package guru.springframework.domain;
 
+import org.neo4j.ogm.annotation.Relationship;
+
+import java.util.Set;
+
 public class Library extends Entity {
     String name;
     String repoUrl;
@@ -27,4 +31,7 @@ public class Library extends Entity {
     public void setRepoUrl(String repoUrl) {
         this.repoUrl = repoUrl;
     }
+
+    @Relationship(type = "LINKS_TO", direction = Relationship.OUTGOING)
+    public Set<Library> libraries;
 }

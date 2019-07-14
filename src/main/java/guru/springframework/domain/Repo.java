@@ -39,4 +39,7 @@ public class Repo extends Entity {
     @Relationship(type = "USES", direction = Relationship.INCOMING)
     public Set<Repo> partners;
 
+    @Relationship(type = "OWNED_BY", direction = Relationship.OUTGOING)
+    public Set<CodeOwner> owners;
+
 }

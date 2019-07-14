@@ -1,5 +1,6 @@
 package guru.springframework.domain;
 
+import guru.springframework.repositories.CodeOwnersRepository;
 import guru.springframework.repositories.LibraryRepository;
 import guru.springframework.repositories.RepoRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +20,13 @@ import org.springframework.stereotype.Component;
 public class RepoInit implements ApplicationRunner {
   private RepoRepository repoRepository;
   private LibraryRepository libraryRepository;
+  private CodeOwnersRepository codeOwnersRepository;
 
   @Autowired
-  public RepoInit(RepoRepository repoRepository, LibraryRepository libraryRepository) {
+  public RepoInit(RepoRepository repoRepository, LibraryRepository libraryRepository, CodeOwnersRepository codeOwnersRepository) {
     this.libraryRepository = libraryRepository;
     this.repoRepository = repoRepository;
+    this.codeOwnersRepository = codeOwnersRepository;
   }
 
   @Override
@@ -40,14 +43,31 @@ public class RepoInit implements ApplicationRunner {
       log.info("Library saved : " + library.getName());
     });
 
+    codeOwnersRepository.deleteAll();
+    InitialCodeOwners.createCodeOwners().forEach(owner -> {
+      codeOwnersRepository.save(owner);
+      log.info("CodeOwner saved : " + owner.getName());
+    });
+
     repoRepository.getRepos(25).stream().forEach(repo -> log.info("Found :" + repo.getName()));
 
     repoRepository.createRelationship("partyProfiles", "extendedProfiles");
     repoRepository.createRelationship("jwt", "finIpc");
+    repoRepository.createLibraryRelationship("mccLoader", "springBoot2");
+    repoRepository.createLibraryRelationship("mccLoader", "neo4j");
 
-    repoRepository.getLinkedRepo("partyProfiles").forEach(product -> log.info("Found mccLoader match:" + product.getName()));
+    repoRepository.getLinkedRepo("partyProfiles").forEach(product -> log.info("Found partyProfiles match : " + product.getName()));
+    repoRepository.getLinkedRepo("jwt").forEach(product -> log.info("Found jwt match : " + product.getName()));
+    repoRepository.getLinkedLibrary("mccLoader").forEach(library -> log.info("Library match for mccLoader : " + library.getName()));
 
-    repoRepository.getLinkedRepo("jwt").forEach(product -> log.info("Found jwt match:" + product.getName()));
+    libraryRepository.createRepoRelationship("partyProfiles", "neo4j");
+    libraryRepository.createLibraryRelationship("neo4j", "jackson");
+    libraryRepository.getLinkedLibrary("jackson").forEach((library -> log.info("Lib match for jackson : " + library.getName())));
+
+    codeOwnersRepository.createRepoRelationship("partyProfiles", "Seagulls");
+    codeOwnersRepository.createLibraryRelationship("neo4j", "Hussars");
+    codeOwnersRepository.getLinkedLibrary("Hussars").forEach((library -> log.info("Library match for Hussars : " + library.getName())));
+    codeOwnersRepository.getLinkedRepo("Seagulls").forEach((repo -> log.info("Repo match for Seagulls : " + repo.getName())));
   }
 
 }
