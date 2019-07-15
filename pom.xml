@@ -9,7 +9,6 @@
 	<packaging>jar</packaging>
 
 	<name>spring-boot-neo4j</name>
-	<name>Demo project for Spring Boot and Neo4j</name>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

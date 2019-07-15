@@ -6,8 +6,8 @@
 </head>
 <body>
 <div class="container">
-    <div th:if="${not #lists.isEmpty(repos)}">
-        <h2>Repo List</h2>
+    <div th:if="${not #lists.isEmpty(libraries)}">
+        <h2>Library List</h2>
         <table class="table table-striped">
             <tr>
                 <th>Id</th>
@@ -17,19 +17,19 @@
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
-            <tr th:each="repo : ${repos}">
-                <td th:text="${repo.id}"></td>
-                <td th:text="${repo.name}"></td>
-                <td th:text="${repo.repoUrl}"></td>
-                <td><a th:href="${'/repo/show/' + repo.id}">View</a> </td>
-                <td><a th:href="${'/repo/edit/' + repo.id}">Edit</a> </td>
-                <td><a th:href="${'/repo/delete/' + repo.id}">Delete</a> </td>
+            <tr th:each="library : ${libraries}">
+                <td th:text="${library.id}"></td>
+                <td th:text="${library.name}"></td>
+                <td th:text="${library.repoUrl}"></td>
+                <td><a th:href="${'/library/show/' + library.id}">View</a> </td>
+                <td><a th:href="${'/library/edit/' + library.id}">Edit</a> </td>
+                <td><a th:href="${'/library/delete/' + library.id}">Delete</a> </td>
             </tr>
         </table>
     </div>
     <div class="row">
         <div class="col-sm-3">
-            <a href="/repo/new">New Repo</a>
+            <a href="/library/new">New Library</a>
         </div>
     </div>
 </div>
