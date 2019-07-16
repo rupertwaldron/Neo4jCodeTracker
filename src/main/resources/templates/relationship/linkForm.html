@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Repo Form</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div class="container">
+
+    <h2>Library Details</h2>
+    <div>
+        <form class="form-horizontal" th:object="${linkForm}" th:action="@{/library}" method="post">
+
+            <table>
+                <tr>
+                    <td>Select Repo:</td>
+                    <td>
+                        <select th:field="*{repoName}">
+                            <option value=""> -- </option>
+                            <option th:each="repo : ${repos}"
+                                    th:value="${repo.id}"
+                                    th:utext="${repo.name}"/>
+                        </select>
+
+                    </td>
+                </tr>
+            </table>
+
+
+            <div class="row">
+                <button type="submit" class="btn btn-default">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

@@ -2,6 +2,7 @@ package guru.springframework.services;
 
 import guru.springframework.commands.RepoForm;
 import guru.springframework.converters.RepoFormToRepo;
+import guru.springframework.domain.Library;
 import guru.springframework.domain.Repo;
 import guru.springframework.repositories.RepoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,5 +59,11 @@ public class RepoServiceImpl implements RepoService {
 
         System.out.println("Saved Repo Id: " + savedRepo.getId());
         return savedRepo;
+    }
+
+    @Override
+    public Repo createLibraryLink(Repo repo, Library library) {
+        repoRepository.createLibraryRelationship(repo.getName(), library.getName());
+        return repo;
     }
 }

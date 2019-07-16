@@ -1,6 +1,7 @@
 package guru.springframework.services;
 
 import guru.springframework.commands.RepoForm;
+import guru.springframework.domain.Library;
 import guru.springframework.domain.Repo;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface RepoService {
     void delete(Long id);
 
     Repo saveOrUpdateProductForm(RepoForm repoForm);
+
+    Repo createLibraryLink(Repo repo, Library library);
 }
