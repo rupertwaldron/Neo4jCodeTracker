@@ -19,7 +19,23 @@
                             <option value=""> -- </option>
                             <option th:each="repo : ${repos}"
                                     th:value="${repo.id}"
-                                    th:utext="${repo.name}"/>
+                                    th:text="${repo.name}"/>
+                        </select>
+
+                    </td>
+                </tr>
+            </table>
+
+
+            <table>
+                <tr>
+                    <td>Select Library:</td>
+                    <td>
+                        <select th:field="*{libraryName}">
+                            <option value=""> -- </option>
+                            <option th:each="library : ${libraries}"
+                                    th:value="${library.id}"
+                                    th:text="${library.name}"/>
                         </select>
 
                     </td>

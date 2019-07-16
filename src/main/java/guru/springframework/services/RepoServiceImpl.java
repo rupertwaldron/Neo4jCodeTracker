@@ -62,8 +62,7 @@ public class RepoServiceImpl implements RepoService {
     }
 
     @Override
-    public Repo createLibraryLink(Repo repo, Library library) {
-        repoRepository.createLibraryRelationship(repo.getName(), library.getName());
-        return repo;
+    public void createLibraryLink(String repo, String library) {
+        repoRepository.createLibraryRelationship(repo, library);
     }
 }
