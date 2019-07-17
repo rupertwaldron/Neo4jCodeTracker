@@ -61,11 +61,19 @@ public class RepoInit implements ApplicationRunner {
     repoRepository.getLinkedLibrary("mccLoader").forEach(library -> log.info("Library match for mccLoader : " + library.getName()));
 
     libraryRepository.createRepoRelationship("partyProfiles", "neo4j");
+    libraryRepository.createRepoRelationship("transMap", "springBoot2");
+    libraryRepository.createRepoRelationship("finIpc", "springBoot2");
+    libraryRepository.createRepoRelationship("transSearch", "springBoot2");
+    libraryRepository.createRepoRelationship("partyProfiles", "springBoot2");
     libraryRepository.createLibraryRelationship("neo4j", "jackson");
     libraryRepository.getLinkedLibrary("jackson").forEach((library -> log.info("Lib match for jackson : " + library.getName())));
 
     codeOwnersRepository.createRepoRelationship("partyProfiles", "Seagulls");
+    codeOwnersRepository.createRepoRelationship("extendedProfiles", "Seagulls");
     codeOwnersRepository.createLibraryRelationship("neo4j", "Hussars");
+    codeOwnersRepository.createRepoRelationship("transMap", "Falcon");
+    codeOwnersRepository.createRepoRelationship("finIpc", "Falcon");
+    codeOwnersRepository.createRepoRelationship("transSearch", "Ultravox");
     codeOwnersRepository.getLinkedLibrary("Hussars").forEach((library -> log.info("Library match for Hussars : " + library.getName())));
     codeOwnersRepository.getLinkedRepo("Seagulls").forEach((repo -> log.info("Repo match for Seagulls : " + repo.getName())));
   }

@@ -7,6 +7,7 @@ public class InitialCodeOwners {
         CodeOwner falcon = new CodeOwner("Falcon");
         CodeOwner seagulls = new CodeOwner("Seagulls");
         CodeOwner hussars = new CodeOwner("Hussars");
+        CodeOwner ultravox = new CodeOwner(("Ultravox"));
 
         return Stream.of(falcon, seagulls, hussars);
     }

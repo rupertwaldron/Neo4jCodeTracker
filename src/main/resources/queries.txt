@@ -1,0 +1,8 @@
+# Find which libraries finIpc uses
+MATCH (a:Repo {name: 'finIpc'})-[:USES]-(l:Library) RETURN l
+
+# Find repos owned by Falcon
+MATCH (:CodeOwner {name: 'Falcon'})-[:OWNS]-(a:Repo) RETURN a
+
+#Find all repos that use springBoot2 along with the code owners
+MATCH (c:CodeOwner)-[:OWNS]-(a:Repo)-[:USES]->(l:Library {name: 'springBoot2'}) RETURN a, c, l
